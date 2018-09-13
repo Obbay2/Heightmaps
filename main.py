@@ -15,22 +15,22 @@ def get_variable_heightmap_data(heightmap_filename: str, start: int, end: int,  
     metadata['data'] = []
 
     for i in range(start, end):
-        row_data = get_heightmap_row_data(heightmap_filename, i, TYPE.PYTHON)
+        row_data = __get_heightmap_row_data(heightmap_filename, i, TYPE.PYTHON)
         metadata['data'].append(row_data['data'])
 
     return handle_type_return(metadata, type)
 
 
-def get_heightmap_row_data(heightmap_filename: str, row_number: int, type: TYPE):
+def __get_heightmap_row_data(heightmap_filename: str, row_number: int, type: TYPE):
     f = Image.open(heightmap_filename)
-    rgb_f = f.convert('L')
+    grayscale_image = f.convert('L')
 
     output = dict()
-    output['length'] = rgb_f.width
+    output['length'] = grayscale_image.width
     output['data'] = []
 
-    for x in range(rgb_f.width):
-        value = rgb_f.getpixel((x, row_number))
+    for x in range(grayscale_image.width):
+        value = grayscale_image.getpixel((x, row_number))
         output['data'].append(value)
 
     return handle_type_return(output, type)
